@@ -1,0 +1,8 @@
+services:
+  job-tracker:
+    build: .
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./data:/app/data
+

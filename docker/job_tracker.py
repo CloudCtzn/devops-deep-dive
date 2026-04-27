@@ -3,7 +3,7 @@ import os
 from datetime import datetime
 
 
-file = "app_status.csv"
+file = "/app/data/app_status.csv"
 
 headers = [
     "Date Submitted",
