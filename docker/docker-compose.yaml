@@ -3,6 +3,22 @@ services:
     build: .
     stdin_open: true
     tty: true
+    depends_on:
+      - db
+    environment:
+      - DB_HOST=db
+      - DB_NAME=jobtracker
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+  db:
+    image: postgres:15
+    environment:
+      - POSTGRES_DB=jobtracker
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
     volumes:
-      - ./data:/app/data
+      - pgdata:/var/lib/postgresgl/data
+
+volumes:
+  pgdata:
 
