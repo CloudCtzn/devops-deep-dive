@@ -30,7 +30,6 @@ function register() {
     });
 }
 
-
 function login() {
     const username = document.getElementById("username").value;
     const password = document.getElementById("password").value;
@@ -85,10 +84,42 @@ function loadApplications() {
                     <p><strong>${app.company_name}</strong> — ${app.job_title}</p>
                     <p>Salary: ${app.salary} | Status: ${app.response}</p>
                     <p>Date: ${app.date_submitted}</p>
+                    <select id="status-${app.id}">
+                        <option value="Applied">Applied</option>
+                        <option value="Interviewing">Interviewing</option>
+                        <option value="Rejected">Rejected</option>
+                        <option value="Offer">Offer</option>
+                    </select>
+                    <button onclick="updateStatus(${app.id})">Update Status</button>
+                    <button onclick="deleteApplication(${app.id})" style="background-color:#e74c3c;">Delete</button>
                 </div>
             `;
         });
     });
+}
+
+function updateStatus(id) {
+    const newStatus = document.getElementById("status-" + id).value;
+    fetch("/applications/" + id, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + token
+        },
+        body: JSON.stringify({ response: newStatus })
+    })
+    .then(res => res.json())
+    .then(() => loadApplications());
+}
+
+function deleteApplication(id) {
+    if (!confirm("Are you sure you want to delete this application?")) return;
+    fetch("/applications/" + id, {
+        method: "DELETE",
+        headers: { "Authorization": "Bearer " + token }
+    })
+    .then(res => res.json())
+    .then(() => loadApplications());
 }
 
 function logout() {
