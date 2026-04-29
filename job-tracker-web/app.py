@@ -73,12 +73,12 @@ def login():
     data = request.get_json()
     conn = get_connection()
     cur = conn.cursor()
-    cur.execute("SELECT id FROM users WHERE username = %s AND password = %s",
-                (data["username"], data["password"]))
+    cur.execute("SELECT id, password FROM users WHERE username = %s",
+            (data["username"],))
     user = cur.fetchone()
     cur.close()
     conn.close()
-    if user and bcrypt.checkpw(data["password"].encode("utf-8"), user[1].encode("utf-8")):
+    if user and bcrypt.checkpw(data["password"].encode("utf-8"), user[1].encode("utf-8")):  
         token = create_access_token(identity=str(user[0]))
         return jsonify({"access_token": token})
     return jsonify({"error": "Invalid credentials"}), 401
