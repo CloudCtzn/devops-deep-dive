@@ -3,6 +3,7 @@ import psycopg2
 from flask import Flask, request, jsonify, render_template
 from flask_jwt_extended import JWTManager, jwt_required, get_jwt_identity
 from flask_jwt_extended import create_access_token 
+import bcrypt 
 
 app = Flask(__name__)
 app.config["JWT_SECRET_KEY"] = os.environ.get("JWT_SECRET_KEY", "changethislater")
@@ -51,6 +52,7 @@ def init_users():
 @app.route("/register", methods=["POST"])
 def register():
     data = request.get_json()
+    hashed = bcrypt.hashpw(data["password"].encode("utf-8"), bcrypt.gensalt())
     conn = get_connection()
     cur = conn.cursor()
     try:
@@ -76,7 +78,7 @@ def login():
     user = cur.fetchone()
     cur.close()
     conn.close()
-    if user:
+    if user and bcrypt.checkpw(data["password"].encode("utf-8"), user[1].encode("utf-8")):
         token = create_access_token(identity=str(user[0]))
         return jsonify({"access_token": token})
     return jsonify({"error": "Invalid credentials"}), 401
