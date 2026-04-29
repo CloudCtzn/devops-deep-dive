@@ -31,4 +31,4 @@ devops-deep-dive/
 ```
 ## Connect 
 - 💼 [LinkedIN](https://linkedin.com/in/zacharycaudle)
-- 🐙 [GitHub](https://github.com/CloudCtzn)
+- 🐙 [GitHub](https://github.com/CloudCtzn) 
