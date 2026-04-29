@@ -59,7 +59,7 @@ def register():
         cur.execute("""
             INSERT INTO users (username, password)
             VALUES (%s, %s)
-        """, (data["username"], data["password"]))
+        """, (data["username"], hashed.decode("utf-8")))
         conn.commit()
         return jsonify({"message": "User created."}), 201
     except Exception as e:
