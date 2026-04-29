@@ -45,6 +45,8 @@ jobs:
             aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 626635415421.dkr.ecr.us-east-1.amazonaws.com
             docker pull 626635415421.dkr.ecr.us-east-1.amazonaws.com/cloudctzn-job-tracker:latest
             cd ~
+            sudo systemctl stop cloudctzn
             docker-compose down --remove-orphans
             docker rm -f ubuntu_web_1 2>/dev/null || true
             docker-compose up -d
+            sudo systemctl start cloudctzn
